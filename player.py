@@ -30,8 +30,8 @@ class Player(CircleShape):
 
         if keys[pygame.K_a]:
             self.rotate(-dt)
-            print("Pressed a")
+            #print("Pressed a")
         if keys[pygame.K_d]:
             self.rotate(dt)
-            print("Pressed d")
+            #print("Pressed d")
         
