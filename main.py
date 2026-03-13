@@ -47,6 +47,10 @@ def main():
                 log_event("player_hit")
                 print("Game over!")
                 sys.exit()
+            for shot in shots:
+                if ast.collides_with(shot):
+                    ast.kill()
+                    shot.kill()
         for dra in drawable:
             dra.draw(screen)
         pygame.display.flip()
