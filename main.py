@@ -6,6 +6,7 @@ from player import Player
 from asteroid import Asteroid
 from asteroidfield import AsteroidField
 from shot import Shot
+from gamestate import GameState
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT, PLAYER_RADIUS
 
 def main():
@@ -33,6 +34,9 @@ def main():
 
     Shot.containers = (shots, updatable, drawable)
 
+    score = GameState()
+    font = pygame.font.Font(None, 36)
+
 
     while True:
         for event in pygame.event.get():
@@ -40,16 +44,28 @@ def main():
                 return
         screen.fill("black")
 
+        score_text = f"Score: {score.get_score()}"
+        lives_text = f"Lives: {score.get_lives()}"
+
+        score_surf = font.render(score_text, True, (255, 255, 255))
+        lives_surf = font.render(lives_text, True, (255, 255, 255))
+
+        # Blit HUD
+        screen.fill((0, 0, 0))
+        screen.blit(score_surf, (10, 10))
+        screen.blit(lives_surf, (10, 40))
+
         for upd in updatable:
             upd.update(dt)
         for ast in asteroids:
             if ast.collides_with(player):
                 log_event("player_hit")
-                print("Game over!")
-                sys.exit()
+                score.hit_ast()
+                player.respawn(x, y)
             for shot in shots:
                 if ast.collides_with(shot):
                     log_event("asteroid_shot")
+                    score.kill_ast()
                     ast.split()
                     shot.kill()
         for dra in drawable:

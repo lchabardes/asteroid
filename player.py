@@ -27,6 +27,10 @@ class Player(CircleShape):
     def rotate(self, dt):
         self.rotation += PLAYER_TURN_SPEED * dt
 
+    def respawn(self, x, y):
+        self.position.x = x
+        self.position.y = y
+
     def update(self, dt):
         self.shot_limiter -= dt
         keys = pygame.key.get_pressed()
